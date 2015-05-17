@@ -1,0 +1,19 @@
+{
+  "name": "jquery.stickytable",
+  "version": "0.0.1",
+  "description": "Sticky table header and columns",
+  "main": "src/jquery.stickyheader.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alekstorm/jquery.stickytables.git"
+  },
+  "keywords": [
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alekstorm/jquery.stickytables/issues"
+  },
+  "homepage": "https://github.com/alekstorm/jquery.stickytables#readme"
+}

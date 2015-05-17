@@ -1,0 +1,26 @@
+.sticky-wrap {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.sticky-wrap th {
+    white-space: nowrap;
+}
+
+.sticky-wrap .sticky-thead,
+.sticky-wrap .sticky-col,
+.sticky-wrap .sticky-intersect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 50;
+}
+
+.sticky-wrap .sticky-thead {
+    z-index: 100;
+}
+
+.sticky-wrap .sticky-intersect {
+    z-index: 150;
+}
