@@ -81,14 +81,14 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
         // Position sticky header based on wrapper scrollTop()
         if($stickyWrap.scrollTop() > 0) {
           // When top of wrapping parent is out of view
+          $stickyWrap.addClass('sticky-head-scrolled');
           $stickyHead.add($stickyInsct).css({
-            opacity: 1,
             top: $stickyWrap.scrollTop()
           });
         } else {
           // When top of wrapping parent is in view
+          $stickyWrap.removeClass('sticky-head-scrolled');
           $stickyHead.add($stickyInsct).css({
-            opacity: 0,
             top: 0
           });
         }
@@ -97,14 +97,14 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
         // Position sticky header based on viewport scrollTop
         if($(window).scrollTop() > $this.offset().top && $(window).scrollTop() < $this.offset().top + $this.outerHeight() - allowance) {
           // When top of viewport is in the table itself
+          $stickyWrap.addClass('sticky-head-scrolled');
           $stickyHead.add($stickyInsct).css({
-            opacity: 1,
             top: $(window).scrollTop() - $this.offset().top
           });
         } else {
           // When top of viewport is above or below table
+          $stickyWrap.removeClass('sticky-head-scrolled');
           $stickyHead.add($stickyInsct).css({
-            opacity: 0,
             top: 0
           });
         }
@@ -113,19 +113,21 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
     function repositionStickyCol() {
       if($stickyWrap.scrollLeft() > 0) {
         // When left of wrapping parent is out of view
+        $stickyWrap.addClass('sticky-col-scrolled');
         $stickyCol.add($stickyInsct).css({
-          opacity: 1,
           left: $stickyWrap.scrollLeft()
         });
       } else {
         // When left of wrapping parent is in view
+        $stickyWrap.removeClass('sticky-col-scrolled');
         $stickyCol
-        .css({ opacity: 0 })
         .add($stickyInsct).css({ left: 0 });
       }
     };
 
     setWidths();
+    repositionStickyHead();
+    repositionStickyCol();
 
     $this.parent('.sticky-wrap').scroll(td.throttle(250, function() {
       repositionStickyHead();
