@@ -129,18 +129,18 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
     repositionStickyHead();
     repositionStickyCol();
 
-    $this.parent('.sticky-wrap').scroll(td.throttle(250, function() {
+    $this.parent('.sticky-wrap').scroll(td.throttle(150, function() {
       repositionStickyHead();
       repositionStickyCol();
     }));
 
     $(window)
     .load(setWidths)
-    .resize(td.debounce(250, function () {
+    .resize(td.debounce(150, function () {
       setWidths();
       repositionStickyHead();
       repositionStickyCol();
     }))
-    .scroll(td.throttle(250, repositionStickyHead));
+    .scroll(td.throttle(150, repositionStickyHead));
   }
 }));
