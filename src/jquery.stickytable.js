@@ -126,6 +126,8 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
 
         } else {
 
+          $('.sticky-wrap').removeClass('sticky-head-scrolled');
+
           if($('.sticky-wrap .sticky-thead').css('position') === 'fixed') {
             
             $('.sticky-wrap .sticky-thead').css({
