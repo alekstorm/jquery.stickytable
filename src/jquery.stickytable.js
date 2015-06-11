@@ -205,7 +205,7 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
     $(window).scroll(function(e) {
 
       var currentVerticalPos = $(window).scrollTop();
-      var currentHorizontalPos = $(window).scrollLeft();
+      var currentHorizontalPos = $stickyWrap.scrollLeft();
 
       if( currentHorizontalPos == previousHorizontalScroll ) {
         // Vertical scrolling on Window
@@ -219,7 +219,7 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
     $stickyWrap.scroll(function() {
         var stickyWrapScrollLeft = $stickyWrap.scrollLeft();
         if (previousHorizontalScroll != stickyWrapScrollLeft) {
-            // Horizonal scrolling in sticky-wrap
+            // Horizontal scrolling in sticky-wrap
             repositionStickyCol();
         }
         previousHorizontalScroll = stickyWrapScrollLeft;
