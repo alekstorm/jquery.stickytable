@@ -59,6 +59,7 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
       // Set width of sticky table col
       $stickyCol.find('th').add($stickyInsct.find('th')).width($this.find('thead th').width())
     };
+
     function repositionStickyHead() {
       var allowance = 0;
       // Calculate allowance
@@ -92,31 +93,106 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
             top: 0
           });
         }
+
       } else {
-        // If it is not overflowing (basic layout)
-        // Position sticky header based on viewport scrollTop
-        if($(window).scrollTop() > $this.offset().top && $(window).scrollTop() < $this.offset().top + $this.outerHeight() - allowance) {
-          // When top of viewport is in the table itself
+
+        if( $(window).scrollTop() > $('.sticky-wrap').offset().top ) {
           $stickyWrap.addClass('sticky-head-scrolled');
-          $stickyHead.add($stickyInsct).css({
-            top: $(window).scrollTop() - $this.offset().top
-          });
+          // If Window.scrollTop is above the StickyWrap, then execute
+          if( $('.sticky-wrap').scrollLeft() > 0 ) {
+
+            $('.sticky-wrap .sticky-thead').css({
+              position: 'fixed',
+              top: 0
+            });
+
+            $('.sticky-wrap .sticky-intersect').css({
+              position: 'fixed',
+              top: 0,
+              left: 0
+            });
+
+            $('.sticky-wrap .sticky-thead').css({
+              left: -$('.sticky-wrap').scrollLeft()
+            });
+
+          } else {
+            $stickyHead.add($stickyInsct).css({
+              position: 'fixed',
+              top: 0,
+              left: 0
+            });
+          }
+
         } else {
-          // When top of viewport is above or below table
-          $stickyWrap.removeClass('sticky-head-scrolled');
+
+          $('.sticky-wrap').removeClass('sticky-head-scrolled');
+
+          if($('.sticky-wrap .sticky-thead').css('position') === 'fixed') {
+            
+            $('.sticky-wrap .sticky-thead').css({
+              position: 'absolute',
+              top: 0,
+              left: 0
+            });
+
+            $('.sticky-wrap .sticky-intersect').css({
+              position: 'absolute',
+              top: 0,
+              left: $('.sticky-wrap').scrollLeft()
+            });
+            
+          } 
+
           $stickyHead.add($stickyInsct).css({
+            position: 'absolute',
             top: 0
-          });
+          });          
+
         }
       }
-    };
+    }
+    
+
     function repositionStickyCol() {
       if($stickyWrap.scrollLeft() > 0) {
         // When left of wrapping parent is out of view
         $stickyWrap.addClass('sticky-col-scrolled');
+
+        if($stickyHead.css('position') === "fixed" && $stickyWrap.scrollLeft() > 0) {
+          $stickyHead.css({
+            left: 0
+          });
+        }
+
         $stickyCol.add($stickyInsct).css({
+          position: 'absolute',
           left: $stickyWrap.scrollLeft()
         });
+
+        $stickyInsct.css({
+          position: 'absolute',
+          top: $(window).scrollTop() - $this.offset().top
+        });
+
+        $stickyHead.css({
+          position: 'absolute',
+          top: $(window).scrollTop() - $this.offset().top
+        });
+
+        if( $(window).scrollTop() < $this.offset().top ) {
+
+          $stickyHead.css({
+            position: 'absolute',
+            top: 0
+          });
+
+          $stickyInsct.css({
+            position: 'absolute',
+            top: 0
+          });
+        }
+
       } else {
         // When left of wrapping parent is in view
         $stickyWrap.removeClass('sticky-col-scrolled');
@@ -125,22 +201,31 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
       }
     };
 
+    var previousVerticalScroll = 0;
+    $(window).scroll(function(e) {
+
+      var currentVerticalPos = $(window).scrollTop();
+      var currentHorizontalPos = $(window).scrollLeft();
+
+      if( currentHorizontalPos == previousHorizontalScroll ) {
+        // Vertical scrolling on Window
+        repositionStickyHead();
+      }
+      previousVerticalScroll = currentVerticalPos;
+    });
+
+
+    var previousHorizontalScroll = 0;
+    $stickyWrap.scroll(function() {
+        var stickyWrapScrollLeft = $stickyWrap.scrollLeft();
+        if (previousHorizontalScroll != stickyWrapScrollLeft) {
+            // Horizonal scrolling in sticky-wrap
+            repositionStickyCol();
+        }
+        previousHorizontalScroll = stickyWrapScrollLeft;
+    });
+
     setWidths();
-    repositionStickyHead();
-    repositionStickyCol();
-
-    $this.parent('.sticky-wrap').scroll(td.throttle(150, function() {
-      repositionStickyHead();
-      repositionStickyCol();
-    }));
-
-    $(window)
-    .load(setWidths)
-    .resize(td.debounce(150, function () {
-      setWidths();
-      repositionStickyHead();
-      repositionStickyCol();
-    }))
-    .scroll(td.throttle(150, repositionStickyHead));
+    
   }
 }));
