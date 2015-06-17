@@ -40,7 +40,12 @@ if(typeof module === 'object' && typeof module.exports === 'object') {
       .end()
       .find('tbody td').remove();
 
-    $stickyInsct.html('<thead><tr><th>'+$this.find('thead th:first-child').html()+'</th></tr></thead>');
+    var withExtraTHs = $this.find('thead > tr > th:first-child');
+    var withExtraTHsHTML = withExtraTHs.map(function () {
+      return '<tr>' + this.outerHTML + '</tr>';
+    });
+
+    $stickyInsct.html('<thead>' + withExtraTHsHTML.toArray().join() + '</thead>');
 
     // Set widths
     function setWidths() {
